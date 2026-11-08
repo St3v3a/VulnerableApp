@@ -1,14 +1,11 @@
--- Level 1: SQL Injection
--- Real password: 'not_needed_for_sqli'
-INSERT INTO auth_users VALUES (1, 'admin_sqli', 'not_needed_for_sqli', NULL, 'PLAIN', 1, 'admin_sqli@example.com', 'ADMIN');
+-- Level 1: password verified after a parameterized lookup.
+INSERT INTO auth_users VALUES (1, 'admin_sqli', '$2y$12$q9LD7PXq9tlWNvoCgatrSOQolWk23XKxnly7sLOhStMsT.OBulfC2', NULL, 'BCRYPT', 1, 'admin_sqli@example.com', 'ADMIN');
 
--- Level 2: Sensitive Data Logging
--- Real password: 'v9K#2mLp!8zQ'
-INSERT INTO auth_users VALUES (2, 'admin_logs', 'v9K#2mLp!8zQ', NULL, 'PLAIN', 2, 'admin_logs@example.com', 'ADMIN');
+-- Level 2: the disclosed legacy credential was rotated; reset is required for login.
+INSERT INTO auth_users VALUES (2, 'admin_logs', '$2y$12$G./IhJxZnMXDZVDHpJ7B6.S3YIZDHkUa2BrIZX5hF80lftqLQD4x2', NULL, 'BCRYPT', 2, 'admin_logs@example.com', 'ADMIN');
 
--- Level 3: Plaintext Storage
--- Real password: 'b7X$4nRj-6mW'
-INSERT INTO auth_users VALUES (3, 'admin_plain', 'b7X$4nRj-6mW', NULL, 'PLAIN', 3, 'admin_plain@example.com', 'ADMIN');
+-- Level 3: the existing exercise credential remains valid through a bcrypt verifier.
+INSERT INTO auth_users VALUES (3, 'admin_plain', '$2y$12$5DsTP5m2CLmWRY9/clT4pOMZ50plTaCkHnUqH3Ugik0andNa7hYq6', NULL, 'BCRYPT', 3, 'admin_plain@example.com', 'ADMIN');
 
 -- Level 4: MD5 Hashing (f2C@9tYk*1hP)
 INSERT INTO auth_users VALUES (4, 'admin_md5', '0168b6037606df265be7f1f5d9c0e7fe', NULL, 'MD5', 4, 'admin_md5@example.com', 'ADMIN');
@@ -22,14 +19,12 @@ INSERT INTO auth_users VALUES (6, 'admin_sha256', '8b8eca84f7e2b04f531749f999c3b
 -- Level 7: Salted SHA-256 (q1W%6nTp^8vM with Salt s9A#2zLk)
 INSERT INTO auth_users VALUES (7, 'admin_enum', '71ad23cc508b5658f0bc21d8323f55521be98ca951e83a4a4d15641a3ca2b8a4', 's9A#2zLk', 'SHA256', 7, 'admin_enum@example.com', 'ADMIN');
 
--- Level 8: Weak Password + Bcrypt (password123)
--- Bcrypt hash for 'password123'
-INSERT INTO auth_users VALUES (8, 'admin_weak', '$2a$10$gV2vZ5fxhZlwOP.GIqOI1.z7q5jws8VDmgIcKqY/uzvhzSUDio2sW', NULL, 'BCRYPT', 8, 'admin_weak@example.com', 'ADMIN');
+-- Level 8: the weak credential was rotated to a high-entropy password.
+INSERT INTO auth_users VALUES (8, 'admin_weak', '$2y$12$smntEfOGa8sF3jVYkH8v0uzQz8m6WzdavNCJ8pyF89nqSWJB7VUuK', NULL, 'BCRYPT', 8, 'admin_weak@example.com', 'ADMIN');
 
 -- Level 9: Secure (Bcrypt + Generic Error) (9fG#2hJk*LmN!8qR)
 -- Bcrypt hash for '9fG#2hJk*LmN!8qR'
 INSERT INTO auth_users VALUES (9, 'admin_secure', '$2a$10$1WiFUNqUY/vHTzR2QtuMQuzCLK3aZEdjEUpqS4msXOevaCz7Wobe.', NULL, 'BCRYPT', 9, 'admin_secure@example.com', 'ADMIN');
 
--- Level 10: Low-iteration BCrypt (cost factor 4)
--- Bcrypt hash (cost 4) for the common password 'sunshine'
-INSERT INTO auth_users VALUES (10, 'admin_lowcost', '$2a$04$rK/CT/Bz7GjjGLnB3WWjTOpMpNcGJzmoh.bdc7gQJ4DBQnKj9xnHC', NULL, 'BCRYPT_LOW_ITERATION', 10, 'admin_lowcost@example.com', 'ADMIN');
+-- Level 10: the weak credential and cost-4 verifier were replaced.
+INSERT INTO auth_users VALUES (10, 'admin_lowcost', '$2y$12$f9jn7QtQPHH.VrbaCkSq5ujHOzbY16xkadJN77PpW4Op32vyxmIXS', NULL, 'BCRYPT', 10, 'admin_lowcost@example.com', 'ADMIN');
