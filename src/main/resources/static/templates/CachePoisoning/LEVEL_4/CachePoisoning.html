@@ -1,7 +1,7 @@
 <div id="cachePoisoningContainer" class="cache-poisoning-shell">
     <h3 class="cache-poisoning-title">Cache Poisoning - Level 4</h3>
     <p class="cache-poisoning-subtitle">
-        This level stops trusting <code>X-Forwarded-Host</code>, but still caches personalized content publicly. The attacker request sets <code>demo_user</code>; the victim request clears that cookie before loading the same route.
+        Personalized responses use a private, no-store policy. Compare two users and verify that the second request does not receive the first user's content.
     </p>
 
     <div class="cache-poisoning-layout">
@@ -10,7 +10,7 @@
             <div class="cache-poisoning-form">
                 <div class="cache-poisoning-entry-row">
                     <div class="cache-poisoning-field">
-                        <label class="cache-poisoning-label" for="demoUserInput">Attacker demo_user cookie</label>
+                        <label class="cache-poisoning-label" for="demoUserInput">First-user demo_user cookie</label>
                         <input
                             class="cache-poisoning-input"
                             type="text"
@@ -18,7 +18,7 @@
                             placeholder="admin" />
                     </div>
                     <div class="cache-poisoning-action-group cache-poisoning-action-group-inline">
-                        <button type="button" id="poisonCacheBtn">Send attacker request</button>
+                        <button type="button" id="poisonCacheBtn">Send first request</button>
                     </div>
                 </div>
 
@@ -27,7 +27,7 @@
                         <button type="button" id="resetCacheBtn">Reset Cache</button>
                     </div>
                     <div class="cache-poisoning-action-group cache-poisoning-action-group-right">
-                        <button type="button" id="victimRequestBtn">Send victim request</button>
+                        <button type="button" id="victimRequestBtn">Send guest request</button>
                     </div>
                 </div>
 
@@ -36,7 +36,7 @@
                         <input type="checkbox" id="browserCacheToggle" checked />
                         Browser cache
                     </label>
-                    <span class="cache-poisoning-toggle-hint">Off: <code>s-maxage</code> only</span>
+                    <span class="cache-poisoning-toggle-hint">Private policy for either setting</span>
                 </div>
             </div>
         </section>
@@ -66,7 +66,7 @@
         <section class="cache-poisoning-block">
             <h5>Observed Response</h5>
             <div id="cachePoisoningResponse" class="cache-poisoning-output">
-                Personalize the attacker request with <code>demo_user</code>, then clear the cookie with the victim request and observe the reused shared-cache response.
+                Send a personalized request, then clear the cookie and send a guest request. The guest should receive a fresh response.
             </div>
         </section>
     </div>
